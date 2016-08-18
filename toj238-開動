@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+int n,min_=0,max_=0,a,b,x,sum=0;
+bool vis[10010];
+struct edge{
+    int to,cost;
+};
+vector<edge>g[10010];
+bool dfs(int x,int sum){
+    vis[x]=1;
+    if (sum>=min_&&sum<=max_)return true;
+    for(edge i:g[x]){
+        if(!vis[i.to]){
+            if(dfs(i.to,sum+i.cost))
+                return true;
+        }
+        //if(!vis[i.to]) return dfs(i.to,sum+i.cost);
+    }
+    return false;
+}
+int main()
+{
+    cin>>n>>min_>>max_;
+    while(--n){
+        cin>>a>>b>>x;
+        g[a].push_back({b,x});
+        g[b].push_back({a,x});
+    }    
+    if(dfs(0,0))cout<<"Eat Eat Eat"<<endl;
+    else cout<<"Go find other chickens"<<endl;
+    return 0;
+}
