@@ -1,0 +1,20 @@
+#include<iostream>
+using namespace std;
+
+int main(){
+    ios::sync_with_stdio(0);
+    cin.tie(0); 
+    long long x,y,z,ans=1,base;
+    cin>>x>>y>>z;
+    base=x;
+    while(y){
+        if(y%2==1)
+            ans*=base;
+        base*=base;
+        ans%=z;
+        base%=z;
+        y/=2;
+    }
+    cout<<ans%z<<'\n';
+    return 0;
+}
