@@ -1,0 +1,94 @@
+#include<bits/stdc++.h>
+#define endl '\n' 
+#define INF 10000010
+using namespace std;
+
+int n,m,s,hight[10010],near[10010],walk=INF,car=INF,min_=INF;
+vector<int>G[10010];
+bool visit[10010],t=0;
+queue< pair<int,int> >Q;
+
+void init(void){
+    for(int i=0;i<n;i++){
+        G[i].clear();
+    }
+    while(!Q.empty())Q.pop();
+    memset(hight,-1,sizeof(hight));
+    memset(near,-1,sizeof(near));
+    memset(visit,0,sizeof(visit));
+    n=0,m=0,s=0;
+    walk=-1;
+    car=-1;
+    min_=INF;
+}
+
+bool walkf(int s){
+    Q.push({s,0});
+    visit[s]=true;
+    while(!Q.empty()){
+        pair<int,int>fnt=Q.front();
+        Q.pop();
+        if(hight[fnt.first]==min_){
+            walk=fnt.second*6;
+            return true;
+        }
+        for(int i=0;i<(int)G[fnt.first].size();i++){
+            if(!visit[G[fnt.first][i]]){
+                visit[G[fnt.first][i]]=true;
+                Q.push({G[fnt.first][i],fnt.second+1});
+            }
+        }
+    }
+    return false;
+}
+
+bool carf(int s){
+    int cnt=0;
+    while(hight[s]!=min_&&near[s]!=-1){
+        cnt++;
+        s=near[s];
+    }
+    if(hight[s]==min_){
+        car=cnt;
+        return true;
+    }
+    return false;
+}
+
+int main(){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    int t;
+    cin>>t;
+    for(int i=1;i<=t;i++){
+        cout<<"Case #"<<i<<": ";
+        init();
+        cin>>n>>m>>s;
+        for(int x=0;x<n;x++){
+            cin>>hight[x];
+            if(hight[x]<min_)min_=hight[x];
+        }
+        for(int x=0;x<m;x++){
+            int a,b;
+            cin>>a>>b;
+            if(hight[a]>hight[b]){
+                if(near[a]==-1||(hight[near[a]]>hight[b])){
+                    near[a]=b;
+                }
+            }
+            else{
+                if(near[b]==-1||(hight[near[b]]>hight[a])){
+                    near[b]=a;
+                }
+            }
+            G[a].push_back(b);
+            G[b].push_back(a);
+        }
+        carf(s);
+        walkf(s);
+        if(walk==-1)cout<<"Call 119!\n";
+        else if(car==-1)cout<<walk<<'\n';
+        else cout<<abs(walk-car)<<'\n';
+    } 
+    return 0;
+}
