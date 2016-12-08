@@ -1,0 +1,22 @@
+#include<bits/stdc++.h>
+#define endl '\n'
+using namespace std;
+int a[1000010];
+
+set<string>store;
+
+int main(){
+//	ios::sync_with_stdio(0);
+//	cin.tie(0);
+	string s,word;
+	while(cin>>s){
+		for(int i=0;i<s.size();i++)
+			if(!isalpha(s[i]))s[i]=' ';else s[i]=tolower(s[i]);
+		stringstream ss(s);
+		while(ss>>word)store.insert(word);
+	}
+	for(set<string>::iterator i=store.begin();i!=store.end();++i){
+		cout<<*i<<endl;
+	}
+	return 0;
+}
